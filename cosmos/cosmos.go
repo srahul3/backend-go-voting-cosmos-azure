@@ -1,13 +1,13 @@
-
 package cosmos
 
 import (
 	"context"
-//	"flag"
+	//	"flag"
 	"fmt"
 	"log"
 	"os"
-//	"strings"
+
+	//	"strings"
 	"time"
 
 	"github.com/olekukonko/tablewriter"
@@ -15,7 +15,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
 	//"github.com/srahul3/govoting/model"
 )
 
@@ -30,18 +29,6 @@ const (
 	mongoDBDatabaseEnvVarName         = "MONGODB_DATABASE"
 	mongoDBCollectionEnvVarName       = "MONGODB_COLLECTION"
 
-	// status
-	statusPending   = "pending"
-	statusCompleted = "completed"
-	listAllCriteria = "all"
-	statusAttribute = "status"
-
-	// flags (commands)
-	createFlag = "create"
-	listFlag   = "list"
-	updateFlag = "update"
-	deleteFlag = "delete"
-
 	// help text
 	createHelp = "create a todo: enter description. e.g. todo -create \"get milk\""
 	listHelp   = "list all, pending or completed todos. e.g. todo -list <criteria> (criteria can be all, pending or completed"
@@ -50,7 +37,7 @@ const (
 )
 
 // connects to MongoDB
-func connect() *mongo.Client {
+func connect() *(mongo.Client) {
 	mongoDBConnectionString := os.Getenv(mongoDBConnectionStringEnvVarName)
 	if mongoDBConnectionString == "" {
 		mongoDBConnectionString = "mongodb://srahul3-voting-db:grFE2DyiYrxzavKkTA2x5KSOrTUhPP2g7ldKGCUljfJ1Kse9NUGpst4Ada0VKwI3VP3IsZakDSNfxSMNezgtTQ==@srahul3-voting-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@srahul3-voting-db@"
@@ -84,13 +71,35 @@ func connect() *mongo.Client {
 	if err != nil {
 		log.Fatalf("unable to connect %v", err)
 	}
-	
-	
-	
+
 	return c
 }
 
-// creates a todo
+// creates a a voting vandidate
+func (voteCandidate VoteCandiate) CreateIfDoesntExist() {
+	c := connect()
+	ctx := context.Background()
+	defer c.Disconnect(ctx)
+
+	todoCollection := c.Database(database).Collection(collection)
+	filter := bson.D{{"id", voteCandidate.ID}}
+	count, err := todoCollection.CountDocuments(ctx, filter)
+
+	if err != nil {
+		log.Fatalf("failed to count %v", err)
+	} else if count <= 0 {
+		r, err := todoCollection.InsertOne(ctx, voteCandidate)
+		if err != nil {
+			log.Fatalf("failed to add voting %v", err)
+		}
+		fmt.Println("added todo", r.InsertedID)
+	} else {
+		log.Println("Document already exisits")
+	}
+
+}
+
+// creates a a voting vandidate
 func (voteCandidate VoteCandiate) Create() {
 	c := connect()
 	ctx := context.Background()
@@ -104,11 +113,43 @@ func (voteCandidate VoteCandiate) Create() {
 	fmt.Println("added todo", r.InsertedID)
 }
 
+// updates a todo
+func (voteCandidate VoteCandiate) Update() {
+	c := connect()
+	ctx := context.Background()
+	defer c.Disconnect(ctx)
+
+	todoCollection := c.Database(database).Collection(collection)
+	oid, err := primitive.ObjectIDFromHex(voteCandidate.ID)
+	if err != nil {
+		log.Fatalf("failed to update todo %v", err)
+	}
+	filter := bson.D{{"_id", oid}}
+	update := bson.D{{"$inc", bson.D{{"vote", voteCandidate.Votes}, {"name", voteCandidate.Name}, {"logo_url", voteCandidate.LogoUrl}}}}
+	_, err = todoCollection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		log.Fatalf("failed to update todo %v", err)
+	}
+}
+
+func VoteUp(id string) {
+	c := connect()
+	ctx := context.Background()
+	defer c.Disconnect(ctx)
+
+	todoCollection := c.Database(database).Collection(collection)
+	filter := bson.D{{"id", id}}
+	update := bson.D{{"$inc", bson.D{{"votes", 1}}}}
+	_, err := todoCollection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		log.Fatalf("failed to update todo %v", err)
+	}
+}
+
 // lists todos
-func List(status string) {
+func List() []VoteCandiate {
 
 	var filter interface{}
-	switch status {
 	filter = bson.D{}
 
 	c := connect()
@@ -127,13 +168,14 @@ func List(status string) {
 	}
 	if len(todos) == 0 {
 		fmt.Println("no todos found")
-		return
+
+		return []VoteCandiate{}
 	}
 
 	todoTable := [][]string{}
 
-	for _, todo := range todos {		
-		todoTable = append(todoTable, []string{todo.ID, todo.Name, string(todo.Votes) })
+	for _, todo := range todos {
+		todoTable = append(todoTable, []string{todo.ID, todo.Name, string(todo.Votes)})
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
@@ -143,25 +185,8 @@ func List(status string) {
 		table.Append(v)
 	}
 	table.Render()
-}
 
-// updates a todo
-func update(todoid, newStatus string) {
-	c := connect()
-	ctx := context.Background()
-	defer c.Disconnect(ctx)
-
-	todoCollection := c.Database(database).Collection(collection)
-	oid, err := primitive.ObjectIDFromHex(todoid)
-	if err != nil {
-		log.Fatalf("failed to update todo %v", err)
-	}
-	filter := bson.D{{"_id", oid}}
-	update := bson.D{{"$set", bson.D{{statusAttribute, newStatus}}}}
-	_, err = todoCollection.UpdateOne(ctx, filter, update)
-	if err != nil {
-		log.Fatalf("failed to update todo %v", err)
-	}
+	return todos
 }
 
 // deletes a todo
@@ -184,8 +209,8 @@ func delete(todoid string) {
 
 // Todo represents a todo
 type VoteCandiate struct {
-    ID      string  `bson:"id"`
-    Name    string  `bson:"name"`
-    LogoUrl string  `bson:"logo_url"`
-    Votes   int     `bson:"votes"`
+	ID      string `bson:"id"`
+	Name    string `bson:"name"`
+	LogoUrl string `bson:"logo_url"`
+	Votes   int    `bson:"votes"`
 }
