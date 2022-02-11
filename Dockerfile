@@ -2,12 +2,10 @@ FROM golang:1.16-alpine
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+COPY ./app ./
 
-COPY *.go ./
 RUN ls -ltrR
+RUN go mod download
 RUN go build -o ./bin
 
 EXPOSE 8080
