@@ -7,7 +7,7 @@ COPY go.sum ./
 RUN go mod download
 
 COPY *.go ./
-
+RUN ls -ltrR
 RUN go build -o ./bin
 
 EXPOSE 8080
