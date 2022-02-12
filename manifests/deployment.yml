@@ -17,6 +17,3 @@ spec:
           image: "srahul3.azurecr.io/srahul3githubaks"
           ports:
           - containerPort: 8080
-        - env:
-          - name: key1
-            value: "val1"
