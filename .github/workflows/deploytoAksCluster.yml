@@ -2,6 +2,10 @@ on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    env:
+      TEST: ${{ secrets.TEST }}
+    
     steps:
     
     - uses: actions/checkout@master
