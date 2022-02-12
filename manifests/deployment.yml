@@ -16,4 +16,7 @@ spec:
         - name: "srahul3githubaks-261c"
           image: "srahul3.azurecr.io/srahul3githubaks"
           ports:
-          - containerPort: 8080
+            - containerPort: 8080
+          - env:
+            - name: TEST
+              value: X
