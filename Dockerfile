@@ -7,6 +7,7 @@ COPY ./app ./
 RUN ls -ltrR
 RUN go mod download
 RUN go build -o ./bin
+RUN chmod a+rx ./bin
 
 EXPOSE 8080
 
