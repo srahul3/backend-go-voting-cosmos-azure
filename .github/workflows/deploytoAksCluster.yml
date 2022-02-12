@@ -54,7 +54,14 @@ jobs:
         container-registry-username: ${{ steps.create-acr.outputs.acr_username }}
         container-registry-password: ${{ steps.create-acr.outputs.acr_password }}
         secret-name: srahul3githudockerauth
-       
+    
+    - name: YAML Transform - 
+      uses: jwsi/secret-parser@v1
+      with:
+        filename: manifests/deployment.yml
+        secret-name: TEST
+        secret-value: ${{ secrets.TEST }}
+        
     - uses: azure/k8s-deploy@v1.4
       with:
         namespace: default
