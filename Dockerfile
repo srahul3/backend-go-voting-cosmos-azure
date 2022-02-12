@@ -4,11 +4,12 @@ WORKDIR /app
 
 COPY ./app ./
 
-RUN ls -ltrR
+RUN sudo ls -ltrR
 RUN go mod download
-RUN go build -o ./bin
-RUN chmod a+rx ./bin
+# RUN go build -o ./bin
+# RUN chmod a+rx ./bin
 
 EXPOSE 8080
 
-CMD [ "/bin" ]
+#CMD [ "/bin" ]
+CMD ["go","run","main.go" ]
