@@ -26,6 +26,9 @@ The JSON content of this is the token and value to this input.
 
 ### Creating secret value MONGODB_CONNECTION_STRING
 
-{ “MONGODB_CONNECTION_STRING”: <mongo-db-connection-string> }
+The connection string must be wrapped in below JSON format and used.
+{
+	"MONGODB_CONNECTION_STRING": "<mongo-db-connection-string>"
+}
 
 
