@@ -54,7 +54,14 @@ jobs:
         container-registry-username: ${{ steps.create-acr.outputs.acr_username }}
         container-registry-password: ${{ steps.create-acr.outputs.acr_password }}
         secret-name: srahul3githudockerauth
-       
+    
+    - uses: azure/k8s-create-secret@v2
+      with:
+        namespace: default
+        secret-type: 'generic'
+        secret-name: k8s-secret
+        secret-data: '{"key1":"value1", "k8ssecret", "k8ssecret-val"}'
+        
     - uses: azure/k8s-deploy@v1.4
       with:
         namespace: default
