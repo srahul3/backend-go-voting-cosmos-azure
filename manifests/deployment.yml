@@ -22,7 +22,7 @@ spec:
             - name: MONGODB_CONNECTION_STRING
               valueFrom: 
                 secretKeyRef:
-                  # az secrest key-val vault name
+                  # az secret key-val vault name
                   name: k8s-secret 
                   # key with the given vault
                   key: MONGODB_CONNECTION_STRING 

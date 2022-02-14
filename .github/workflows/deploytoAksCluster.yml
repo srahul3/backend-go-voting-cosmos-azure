@@ -58,8 +58,9 @@ jobs:
         secret-type: 'generic'
         secret-name: 'k8s-secret'
         # string-data: '{"MONGODB_CONNECTION_STRING": ${{ secrets.MONGODB_CONNECTION_STRING }}, "k8ssecret": "k8ssecret-val"}'
-        string-data: ${{ format('{ "MONGODB_CONNECTION_STRING":{0} }', secrets.MONGODB_CONNECTION_STRING }}
-        
+        # string-data: ${{ format('{ "MONGODB_CONNECTION_STRING":{0} }', secrets.MONGODB_CONNECTION_STRING }}
+        data: ${{ secrets.MONGODB_CONNECTION_STRING }}
+
     - uses: azure/k8s-deploy@v1.4
       with:
         namespace: default
