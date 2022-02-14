@@ -59,8 +59,8 @@ jobs:
       with:
         namespace: default
         secret-type: 'generic'
-        secret-name: k8s-secret
-        secret-data: '{"key1":"value1", "k8ssecret", "k8ssecret-val"}'
+        secret-name: 'k8s-secret'
+        secret-data: '{"key1":"value1", "k8ssecret": "k8ssecret-val"}'
         
     - uses: azure/k8s-deploy@v1.4
       with:
