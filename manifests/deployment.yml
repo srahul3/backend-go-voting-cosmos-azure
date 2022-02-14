@@ -22,6 +22,8 @@ spec:
               value: X
             - name: TEST2
               valueFrom: 
-                secretKeyRef: 
+                secretKeyRef:
+                  # az secrest key-val vault name
                   name: k8s-secret 
+                  # key with the given vault
                   key: k8ssecret 
