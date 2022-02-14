@@ -40,8 +40,7 @@ const (
 func connect() *(mongo.Client) {
 	mongoDBConnectionString := os.Getenv(mongoDBConnectionStringEnvVarName)
 	if mongoDBConnectionString == "" {
-		mongoDBConnectionString = "mongodb://srahul3-voting-db:grFE2DyiYrxzavKkTA2x5KSOrTUhPP2g7ldKGCUljfJ1Kse9NUGpst4Ada0VKwI3VP3IsZakDSNfxSMNezgtTQ==@srahul3-voting-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@srahul3-voting-db@"
-		//log.Fatal("missing environment variable: ", mongoDBConnectionStringEnvVarName)
+		log.Fatal("missing environment variable: ", mongoDBConnectionStringEnvVarName)
 	}
 
 	database = os.Getenv(mongoDBDatabaseEnvVarName)

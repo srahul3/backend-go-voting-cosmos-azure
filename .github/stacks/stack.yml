@@ -10,10 +10,30 @@ branding:
 inputs:
 
   - name: AZURE_CREDENTIALS
-    description: Enter the azure login token. The tokes is based on Azure service principal. Read Readme.md to discover about generating the token using Azure CLI.
+    description: Enter the azure login token. The tokes is based on Azure service principal. Read readme.md to discover about generating the token using Azure CLI.
     is-secret: true
     required: true
-    
+  
+  - name: AZURE_AKS_RESOURCE_GROUP
+    description: Enter the AKS resource group in which this cluster is created.
+    is-secret: true
+    required: true
+
+  - name: AZURE_AKS_NAME
+    description: Enter the AKS service name.
+    is-secret: true
+    required: true
+
+  - name: AKS_KUBECONFIG
+    description: Enter the kubeconfig JSON token. Read readme.md to discover how to generate this token using CLI
+    is-secret: true
+    required: true
+
+  - name: MONGODB_CONNECTION_STRING
+    description: Enter the hosted Mongo Db connection string.
+    is-secret: true
+    required: true
+
 configs:
    repo-metadata:
       parameters:
@@ -21,6 +41,18 @@ configs:
         secrets: 
           - name: AZURE_CREDENTIALS
             value: ${{inputs.AZURE_CREDENTIALS}}
+
+          - name: AZURE_AKS_RESOURCE_GROUP
+            value: ${{inputs.AZURE_AKS_RESOURCE_GROUP}}
+
+          - name: AZURE_AKS_NAME
+            value: ${{inputs.AZURE_AKS_NAME}}
+
+          - name: AKS_KUBECONFIG
+            value: ${{inputs.AKS_KUBECONFIG}}
+
+          - name: MONGODB_CONNECTION_STRING
+            value: ${{inputs.MONGODB_CONNECTION_STRING}}
         topics:
         - react
         - reactjs

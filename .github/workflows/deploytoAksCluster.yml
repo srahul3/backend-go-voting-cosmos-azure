@@ -2,10 +2,7 @@ on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
-    env:
-      TEST: ${{ secrets.TEST }}
-    
+        
     steps:
     
     - uses: actions/checkout@master
@@ -37,7 +34,7 @@ jobs:
     - uses: azure/k8s-set-context@v1
       id: login
       with:
-         kubeconfig: ${{ secrets.aks_srahul3githubaks_kubeConfig }}
+         kubeconfig: ${{ secrets.AKS_KUBECONFIG }}
     
     - name: Create namespace
       run: |
@@ -60,7 +57,7 @@ jobs:
         namespace: default
         secret-type: 'generic'
         secret-name: 'k8s-secret'
-        string-data: '{"key1":"value1", "k8ssecret": "k8ssecret-val"}'
+        string-data: '{"demo-key1":"demo-value1", "k8ssecret": "k8ssecret-val"}'
         
     - uses: azure/k8s-deploy@v1.4
       with:
