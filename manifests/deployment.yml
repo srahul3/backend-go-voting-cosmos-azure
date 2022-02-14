@@ -1,29 +1,28 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "srahul3githubaks-261c"
+  name: "backend-go-voting"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "srahul3githubaks-261c"
+      app: "backend-go-voting"
   template:
     metadata:
       labels:
-        app: "srahul3githubaks-261c"
+        app: "backend-go-voting"
     spec:
       containers:
-        - name: "srahul3githubaks-261c"
-          image: "srahul3.azurecr.io/srahul3githubaks"
+        - name: "backend-go-voting"
+          # name doesnt matter since we will replace it with image substitution in actions
+          image: "srahul3.azurecr.io/backend-go-voting"
           ports:
             - containerPort: 8080
-          env:
-            - name: TEST
-              value: X
-            - name: TEST2
+          env:            
+            - name: MONGODB_CONNECTION_STRING
               valueFrom: 
                 secretKeyRef:
                   # az secrest key-val vault name
                   name: k8s-secret 
                   # key with the given vault
-                  key: k8ssecret 
+                  key: MONGODB_CONNECTION_STRING 
