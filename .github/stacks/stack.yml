@@ -1,0 +1,38 @@
+version: 0.1.0   
+
+name: voting-app-react
+description: 'The Stack provides all boilerplate app and deployment code of the voting application'
+
+branding:
+  icon: 'cloud'
+  color: 'blue'
+
+inputs:
+
+  - name: AZURE_CREDENTIALS
+    description: Enter the azure login token. The tokes is based on Azure service principal. Read Readme.md to discover about generating the token using Azure CLI.
+    is-secret: true
+    required: true
+    
+configs:
+   repo-metadata:
+      parameters:
+        description: 'Azure service principal'
+        secrets: 
+          - name: AZURE_CREDENTIALS
+            value: ${{inputs.AZURE_CREDENTIALS}}
+        topics:
+        - react
+        - reactjs
+        - voting-app
+        - azure
+        - azure-static-app
+        - azure-react-app
+        
+   environments:                                        
+    - name: development
+      parameters: 
+        protected-branches: false
+        allowed-branch-rules:
+          - main
+          - releases/*
