@@ -34,6 +34,12 @@ inputs:
     is-secret: true
     required: true
 
+  - name: ACR_NAME
+    description: Enter Azure container registry name.
+    is-secret: true
+    required: true
+
+
 configs:
    repo-metadata:
       parameters:
@@ -53,6 +59,9 @@ configs:
 
           - name: MONGODB_CONNECTION_STRING
             value: ${{inputs.MONGODB_CONNECTION_STRING}}
+
+          - name: ACR_NAME
+            value: ${{inputs.ACR_NAME}}
         topics:
         - react
         - reactjs
