@@ -20,3 +20,8 @@ spec:
           env:
             - name: TEST
               value: X
+            - name: TEST2
+              valueFrom: 
+                secretKeyRef: 
+                  name: k8s-secret 
+                  key: k8ssecret 
