@@ -39,6 +39,11 @@ inputs:
     is-secret: true
     required: true
 
+  - name: ACR_RESOURCE_GROUP
+    description: Enter Azure container registry resource group.
+    is-secret: true
+    required: true
+
 
 configs:
    repo-metadata:
@@ -62,6 +67,10 @@ configs:
 
           - name: ACR_NAME
             value: ${{inputs.ACR_NAME}}
+
+          -name: ACR_RESOURCE_GROUP
+           value: ${{inputs.ACR_RESOURCE_GROUP}}
+          
         topics:
         - react
         - reactjs
