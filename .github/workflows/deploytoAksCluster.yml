@@ -9,7 +9,7 @@ jobs:
     
     - uses: azure/login@v1
       with:
-        client-id: 177a8658-280d-4a4e-806e-fba4696100d6
+        client-id: 31475925-7c87-431d-b6be-5a8735257d34
         tenant-id: c5da8880-8d88-4e7f-9bac-ddfca284ea75
         subscription-id: f99fd245-91fb-4fb5-80b5-3a12f48208a1
 
