@@ -9,9 +9,9 @@ jobs:
     
     - uses: azure/login@v1
       with:
-        client-id: a7043bea-5dac-4916-8dc4-6625cc39a80f
-        tenant-id: dd29a0e0-9461-4272-b6d5-682f9bec8e6e
-        subscription-id: dc030b5d-ffc8-48d9-8d7c-23476f947c3a
+        client-id: 177a8658-280d-4a4e-806e-fba4696100d6
+        tenant-id: c5da8880-8d88-4e7f-9bac-ddfca284ea75
+        subscription-id: f99fd245-91fb-4fb5-80b5-3a12f48208a1
 
     - name: Create ACR
       id: create-acr
