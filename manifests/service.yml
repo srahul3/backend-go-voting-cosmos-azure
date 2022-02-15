@@ -6,6 +6,7 @@ metadata:
         app: "backend-go-voting"
 spec:
     type: LoadBalancer
+    externalTrafficPolicy: Local
     ports:
     - port: 8080
       targetPort: 8080
