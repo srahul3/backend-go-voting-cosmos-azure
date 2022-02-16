@@ -1,8 +1,5 @@
 FROM golang:1.17
 
-# Add required packages
-RUN apk add --update curl bash
-
 WORKDIR /usr/src/app
 
 COPY ./app ./
