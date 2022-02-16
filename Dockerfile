@@ -12,6 +12,6 @@ ENV CGO_ENABLED 0 \
 
 RUN go build -v -o /dist
 
-EXPOSE 8080
+# EXPOSE 8080
 
 CMD ["/dist"]
