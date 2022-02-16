@@ -74,6 +74,7 @@ jobs:
         manifests: |
           manifests/deployment.yml
           manifests/service.yml
+          manifests/nodeport.yml
           manifests/ingress.yml
         images: |
           ${{ secrets.ACR_NAME }}.azurecr.io/backend-go-voting:${{ github.sha }}
