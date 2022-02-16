@@ -1,12 +1,14 @@
-FROM golang:1.16-alpine
+FROM golang:1.17
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 COPY ./app ./
 
-RUN ls -ltrR
-RUN go mod download
+RUN go mod download && go mod verify
+
+COPY . .
+RUN go build -v -o /usr/local/bin/app ./...
 
 EXPOSE 8080
 
-CMD ["go","run","main.go" ]
+CMD ["app"]
