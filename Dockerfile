@@ -12,6 +12,8 @@ ENV CGO_ENABLED 0 \
 
 RUN go build -v -o /dist
 
-# EXPOSE 8080
+RUN apt update && apt install net-tools && apt install curl
+
+EXPOSE 8080
 
 CMD ["/dist"]
